@@ -812,6 +812,11 @@ class EditTeamsDetailsView extends DetailsView {
             });
 
             for (const personName of team.people) {
+                if (people.indexOf(personName) === -1) {
+                    people.push(personName);
+                    roles[personName] = team.roles[personName];
+                }
+
                 if (team.roles[personName] === section) {
                     const peopleListElement = new Element('DIV', peopleList, {
                         elementClass: 'edit-add-items-list-element'
@@ -828,6 +833,12 @@ class EditTeamsDetailsView extends DetailsView {
                         eventListener: ['click', () => {
                             peopleListElement.element.remove();
                             people = people.filter(x => x !== personName);
+                            delete roles[personName];
+
+                            team.roles = roles;
+                            team.people = people;
+
+                            this.database.saveData();
                         }]
                     });
                 }
@@ -863,6 +874,11 @@ class EditTeamsDetailsView extends DetailsView {
                         people.push(value);
                         roles[value] = section;
 
+                        team.people = people;
+                        team.roles = roles;
+
+                        this.database.saveData();
+
                         const peopleListElement = new Element('DIV', null, {
                             elementClass: 'edit-add-items-list-element'
                         });
@@ -878,6 +894,12 @@ class EditTeamsDetailsView extends DetailsView {
                             eventListener: ['click', () => {
                                 peopleListElement.element.remove();
                                 people = people.filter(x => x !== value);
+                                delete roles[personName];
+
+                                team.roles = roles;
+                                team.people = people;
+
+                                this.database.saveData();
                             }]
                         });
 
