@@ -254,7 +254,7 @@ class CreateContactsView extends View {
                         if (!numbers.length) return;
 
                         const phoneA = numbers[0].number.replace(/^\+81\s*/, '');
-                        const phoneB = numbers.length > 1 ? numbers[1].number : '';
+                        const phoneB = numbers.length > 1 ? numbers[1].number.replace(/^\+81\s*/, '') : '';
 
                         const missionaries = area.people.map(name => {
                             const person = this.database.people[name];
